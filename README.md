@@ -1,1 +1,1 @@
-# godel-helper-bot
+# company-helper-bot
