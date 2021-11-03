@@ -1,5 +1,5 @@
 [package]
-name = "godel-helper-bot"
+name = "company-helper-bot"
 version = "0.1.0"
 authors = ["nolik"]
 edition = "2018"
