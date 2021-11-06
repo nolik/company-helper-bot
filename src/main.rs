@@ -12,38 +12,34 @@ async fn run() {
     teloxide::enable_logging!();
     log::info!("Starting bot...");
 
+    // TODO: move to lazy lazy_static
+    let company_info = env::var("COMPANY_INFO").expect("COMPANY_INFO must be set");
+    let database_url = env::var("DISCOUNT_CODES").expect("DISCOUNT_CODES must be set");
+
     let bot = Bot::from_env().auto_send();
-    teloxide::commands_repl(bot, "godel", answer).await;
+    teloxide::commands_repl(bot, "godel-helper", answer).await;
 }
 
 #[derive(BotCommand)]
-#[command(rename = "lowercase", description = "These commands are supported:")]
+#[command(rename = "lowercase", description = "Supported commands:")]
 enum Command {
-    #[command(description = "display this text.")]
+    #[command(description = "Show list of commands")]
     Help,
-    #[command(description = "handle a username.")]
-    Username(String),
-    #[command(description = "handle a username and an age.", parse_with = "split")]
-    UsernameAndAge { username: String, age: u8 },
+    #[command(description = "Show official company name")]
+    Info,
+    #[command(description = "Show OZ discount codes")]
+    Discount,
 }
 
 async fn answer(
     cx: UpdateWithCx<AutoSend<Bot>, Message>,
     command: Command,
 ) -> Result<(), Box<dyn Error + Send + Sync>> {
+
     match command {
         Command::Help => cx.answer(Command::descriptions()).await?,
-        Command::Username(username) => {
-            cx.answer(format!("Your username is @{}.", username))
-                .await?
-        }
-        Command::UsernameAndAge { username, age } => {
-            cx.answer(format!(
-                "Your username is @{} and age is {}.",
-                username, age
-            ))
-            .await?
-        }
+        Command::Info => cx.answer(format!("{}", "company_info")).await?,
+        Command::Discount => cx.answer(format!("OZ codes:{}", "database_url")).await?,
     };
 
     Ok(())
