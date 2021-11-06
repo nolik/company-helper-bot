@@ -14,7 +14,7 @@ async fn run() {
 
     // TODO: move to lazy lazy_static
     let company_info = env::var("COMPANY_INFO").expect("COMPANY_INFO must be set");
-    let database_url = env::var("DISCOUNT_CODES").expect("DISCOUNT_CODES must be set");
+    let discount_codes = env::var("DISCOUNT_CODES").expect("DISCOUNT_CODES must be set");
 
     let bot = Bot::from_env().auto_send();
     teloxide::commands_repl(bot, "godel-helper", answer).await;
@@ -39,7 +39,7 @@ async fn answer(
     match command {
         Command::Help => cx.answer(Command::descriptions()).await?,
         Command::Info => cx.answer(format!("{}", "company_info")).await?,
-        Command::Discount => cx.answer(format!("OZ codes:{}", "database_url")).await?,
+        Command::Discount => cx.answer(format!("OZ codes:{}", "discount_codes")).await?,
     };
 
     Ok(())
