@@ -113,6 +113,7 @@ dependencies = [
 name = "company-helper-bot"
 version = "0.1.0"
 dependencies = [
+ "lazy_static",
  "log",
  "pretty_env_logger",
  "teloxide",
