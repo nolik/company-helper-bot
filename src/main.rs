@@ -1,7 +1,16 @@
+#[macro_use]
+extern crate lazy_static;
+
 use std::env;
 use std::error::Error;
 
 use teloxide::{prelude::*, utils::command::BotCommand};
+
+lazy_static! {
+    static ref COMPANY_INFO: String = env::var("COMPANY_INFO").expect("COMPANY_INFO must be set");
+    static ref DISCOUNT_CODES: String =
+        env::var("DISCOUNT_CODES").expect("DISCOUNT_CODES must be set");
+}
 
 #[tokio::main]
 async fn main() {
@@ -12,12 +21,8 @@ async fn run() {
     teloxide::enable_logging!();
     log::info!("Starting bot...");
 
-    // TODO: move to lazy lazy_static
-    let company_info = env::var("COMPANY_INFO").expect("COMPANY_INFO must be set");
-    let discount_codes = env::var("DISCOUNT_CODES").expect("DISCOUNT_CODES must be set");
-
     let bot = Bot::from_env().auto_send();
-    teloxide::commands_repl(bot, "godel-helper", answer).await;
+    teloxide::commands_repl(bot, "company-helper", answer).await;
 }
 
 #[derive(BotCommand)]
@@ -27,7 +32,7 @@ enum Command {
     Help,
     #[command(description = "Show official company name")]
     Info,
-    #[command(description = "Show OZ discount codes")]
+    #[command(description = "Show discount codes")]
     Discount,
 }
 
@@ -35,11 +40,10 @@ async fn answer(
     cx: UpdateWithCx<AutoSend<Bot>, Message>,
     command: Command,
 ) -> Result<(), Box<dyn Error + Send + Sync>> {
-
     match command {
         Command::Help => cx.answer(Command::descriptions()).await?,
-        Command::Info => cx.answer(format!("{}", "company_info")).await?,
-        Command::Discount => cx.answer(format!("OZ codes:{}", "discount_codes")).await?,
+        Command::Info => cx.answer(format!("{}", COMPANY_INFO.to_owned())).await?,
+        Command::Discount => cx.answer(format!("OZ codes:{}", DISCOUNT_CODES.to_owned())).await?,
     };
 
     Ok(())
