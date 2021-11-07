@@ -16,4 +16,7 @@ jobs:
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
           docker_heroku_process_type: worker
-
+        env:
+          HD_TELOXIDE_TOKEN: ${{secrets.TELEGRAM_BOT_TOKEN}}
+          HD_COMPANY_INFO: ${{secrets.COMPANY_INFO}}
+          HD_DISCOUNT_CODES: ${{secrets.DISCOUNT_CODES}}
