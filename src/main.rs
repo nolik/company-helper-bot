@@ -43,10 +43,7 @@ async fn answer(
     match command {
         Command::Help => cx.answer(Command::descriptions()).await?,
         Command::Info => cx.answer(format!("{}", COMPANY_INFO.to_owned())).await?,
-        Command::Discount => {
-            cx.answer(format!("codes {}", DISCOUNT_CODES.to_owned()))
-                .await?
-        }
+        Command::Discount => { cx.answer(format!("codes {}", DISCOUNT_CODES.to_owned())).await? }
     };
 
     Ok(())
