@@ -18,3 +18,5 @@ jobs:
           docker_heroku_process_type: worker
         env:
           TELOXIDE_TOKEN: ${{secrets.TELEGRAM_BOT_TOKEN}}
+          COMPANY_INFO: ${{secrets.COMPANY_INFO}}
+          DISCOUNT_CODES: ${{secrets.DISCOUNT_CODES}}
