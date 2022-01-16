@@ -1,0 +1,28 @@
+name: manual-deploy
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      discount_codes:
+        description: 'Discount codes to show under /discount command'
+        required: true
+        default: 'need to specify!'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          usedocker: true
+          docker_heroku_process_type: worker
+        env:
+          HD_TELOXIDE_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          HD_COMPANY_INFO: ${{ secrets.COMPANY_INFO }}
+          HD_DISCOUNT_CODES: ${{ github.event.inputs.discount_codes }}
+
